@@ -1,0 +1,72 @@
+<!--漂流瓶 - 创建漂流瓶-->
+<view class="index-page-container">
+  <view class="index-page-content">
+
+    <view class='form-title-text'>这一次，你想认识:</view>
+    <picker
+      mode="region"
+      bindchange="bindRegionChange"
+      value="{{target.address}}"
+      class="form-address-picker"
+    >
+      <view class="form-address-desc">
+        来自:
+      </view>
+      <view class='form-address-item form-address-provice'>{{target.address[0]}}</view>
+      <view class='form-address-item form-address-city'>{{target.address[1]}}</view>
+      <view class='form-address-item form-address-area'>{{target.address[2]}}</view>
+    </picker>
+
+    <view class='gender-select-cont'>
+      <button
+        bindtap="selectTargetGender"
+        data-gender=""
+        class="gender-select-btn {{target.gender==''? 'gender-select-btn-active':''}}"
+        style='margin-left: 0;'>不限</button>
+      <button
+        bindtap="selectTargetGender"
+        data-gender="male"
+        class="gender-select-btn {{target.gender=='male'? 'gender-select-btn-active':''}}"
+      >男生</button>
+      <button
+        bindtap="selectTargetGender"
+        data-gender="female"
+        class="gender-select-btn {{target.gender=='female'? 'gender-select-btn-active':''}}"
+      >女生</button>
+    </view>
+
+    <view class='question-select-cont'>
+      <view class='question-select-title'>选择一个话题来开始吧:</view>
+
+      <radio-group class="question-list" bindchange="selectQuestion">
+        <label class="question-item-label" wx:for="{{questionLibs}}" wx:key="{{index}}">
+          <radio
+            color="rgba(58, 95, 175, 0.6)"
+            class="question-item-radio"
+            value="{{item.id}}"
+            checked="{{item.id == selectQuestion.id}}"
+          />
+          {{item.title}}
+        </label>
+      </radio-group>
+      <view bindtap="refreshQuestionLib" class='refresh-question-lib-btn'>换一批</view>
+
+      <view class='question-select-title create-topic-cont'>或者创建一个新的话题:</view>
+      <input
+        type="text"
+        placeholder="告诉我话题的标题是什么"
+        class='create-question-input'
+        bindinput="createQuestionChange"
+      />
+    </view>
+
+    <view class='create-bottle-cont'>
+      <button
+        class='create-bottle-btn'
+        bindtap="submitCreateBottle"
+      >扔出去</button>
+    </view>
+    
+
+  </view>
+</view>

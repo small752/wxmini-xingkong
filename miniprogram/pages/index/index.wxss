@@ -9,6 +9,39 @@
   display:block;
 }
 
+.index-menu-cont {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  z-index: 99;
+}
+
+.index-menu-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 25rpx 40rpx;
+}
+
+.user-menu-image {
+  width: 35rpx;
+  height: 35rpx;
+  border-radius: 50%;
+  background-color: rgba(29, 24, 24, 0.795);
+  padding: 20rpx;
+}
+
+.bottle-menu-image {
+  margin-left: 20rpx;
+  width: 42rpx;
+  height: 42rpx;
+  border-radius: 50%;
+  background-color: rgba(29, 24, 24, 0.795);
+  padding: 15rpx;
+}
+
 .index-content {
   height:calc(100% - 100px);
   padding: 50px;
@@ -32,10 +65,51 @@
   padding: 5px;
   background-color: #FFF;
   position: absolute;
+  z-index: 50;
   animation: draft_item_anim 2s ease-in-out 0s infinite alternate;
 }
 
 @keyframes draft_item_anim{
 from{transform:translate(0,0)}
 to{transform:translate(0,10px)}
+}
+
+.create-bottle-menu-cont {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200rpx;
+  text-align: center;
+}
+.create-bottle-menu-image {
+  display: inline-block;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  padding: 20rpx;
+  color: #666;
+  z-index: 99;
+  background-color: rgba(255, 255, 255, 0.295);
+}
+
+.filter-address-picker {
+  font-size: 36rpx;
+  color: #FFF;
+  display: inline-block;
+  z-index: 99;
+}
+
+.filter-address-desc {
+  display: inline-block;
+  margin-right: 5rpx;
+}
+
+.filter-address-item {
+  font-size: 26rpx;
+  display: inline-block;
+  margin: 0 10rpx;
+  padding: 5rpx 15rpx;
+  background-color: rgba(58, 95, 175, 0.6);
+  border-radius: 10rpx;
 }

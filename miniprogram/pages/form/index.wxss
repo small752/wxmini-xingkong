@@ -1,0 +1,114 @@
+/* miniprogram/pages/form/index.wxss */
+.index-page-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url('//img.ishanshan.com/gimg/n/20181209/43f88b70da9a9c90d3c131cba2316781');
+  background-size: 100% 100%;
+  display:block;
+}
+
+.index-page-content {
+  padding: 40rpx 30rpx;
+}
+
+.form-title-text {
+  font-size: 36rpx;
+  color: #FFF;
+}
+
+.form-address-picker {
+  font-size: 36rpx;
+  color: #FFF;
+  margin: 20rpx 0;
+}
+
+.form-address-desc {
+  display: inline-block;
+  margin-right: 5rpx;
+}
+
+.form-address-item {
+  font-size: 26rpx;
+  display: inline-block;
+  margin: 0 10rpx;
+  padding: 5rpx 15rpx;
+  background-color: rgba(58, 95, 175, 0.6);
+  border-radius: 10rpx;
+}
+
+.gender-select-cont {
+  margin: 30rpx 0;
+}
+
+.gender-select-btn {
+  font-size: 30rpx;
+  color: #FFF;
+  display: inline-block;
+  background-color: rgba(142, 145, 150, 0.6);
+  border-radius: 10rpx;
+  margin: 0 10rpx;
+  padding: 10rpx 20rpx;
+  line-height: 1;
+}
+
+.gender-select-btn-active {
+  background-color: rgba(58, 95, 175, 0.6);
+}
+
+.question-select-cont {
+  margin-top: 60rpx;
+}
+
+.question-select-title {
+  font-size: 36rpx;
+  color: #FFF;
+}
+
+.question-list {
+  margin-top: 20rpx;
+}
+
+.question-item-label {
+  width: 100%;
+  display: block;
+  font-size: 30rpx;
+  color: rgb(224, 212, 212);
+  margin: 10rpx 0;
+}
+
+.question-item-radio {
+  margin-right: 16rpx;
+  display: inline-block;
+}
+
+.create-topic-cont {
+  margin-top: 40rpx;
+}
+
+.create-question-input {
+  margin-top: 10rpx;
+  border: 1px solid #DDD;
+  border-radius: 8rpx;
+  padding: 10rpx 15rpx;
+  font-size: 26rpx;
+}
+
+.create-bottle-cont {
+  margin-top: 60rpx;
+  text-align: center;
+}
+
+.create-bottle-btn {
+  width: 60%;
+  display: inline-block;
+  background-color: rgba(58, 95, 175, 0.85);
+  color: #FFF;
+  line-height: 2;
+}
+
+.refresh-question-lib-btn {
+  font-size: 30rpx;
+  color: rgba(58, 95, 175, 0.85);
+  text-decoration: underline;
+}

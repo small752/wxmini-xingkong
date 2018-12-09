@@ -1,21 +1,54 @@
-<!--index.wxml-->
+<!--漂流瓶首页-->
 <view class="index-page-container">
+
+  <view class='index-menu-cont'>
+    <view wx:if="{{userInfo.openid&& userInfo.openid.length > 0}}" class='index-menu-content'>
+      <image
+        class='user-menu-image'
+        src="../../images/user.png">
+      </image>
+      <image
+          class='bottle-menu-image'
+          src="../../images/bottle.png"
+      ></image>
+
+      <view>
+        <picker
+          mode="region"
+          bindchange="bindRegionChange"
+          value="{{filterAddress}}"
+          class="filter-address-picker"
+        >
+          <view class="filter-address-desc">
+            来自:
+          </view>
+          <view class='filter-address-item filter-address-provice'>{{filterAddress[0]}}</view>
+          <view class='filter-address-item filter-address-city'>{{filterAddress[1]}}</view>
+          <view class='filter-address-item filter-address-area'>{{filterAddress[2]}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
   <view class='index-content'>
-    
     <view class='draft-pool-content'>
-      <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">获取用户信息</button>
-      <button open-type="openSetting">打开授权设置页</button>
-      <view>{{userInfoStr}}</view>
       <image
         wx:for="{{draftList}}"
         wx:for-index="idx"
         wx:for-item="item"
-        wx:key="item.key"
+        wx:key="{{item.key}}"
         style="left: {{item.rx+'%'}}; top: {{item.ry+'%'}}"
         class='draft-item-image'
+        bindtap="bottleClick"
+        data-bottlekey="{{item.key}}"
         src="../../images/item.png"></image>
 
+      <view class='create-bottle-menu-cont'>
+        <image
+            class='create-bottle-menu-image'
+            src="../../images/create_bottle.png"
+            bindtap="routeToBottleFormPage"
+          ></image>
+        </view>
     </view>
-
   </view>
 </view>

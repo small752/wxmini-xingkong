@@ -6,13 +6,13 @@ Page({
     draftList: [],
     draftCount: 10,
     userInfo: {},
-    filterAddress: ['浙江省', '杭州市', '滨江区']
+    filterAddress: ['浙江省', '杭州市', '滨江区'],
+    authModalVisible: false,
   },
 
   onLoad: function() {
     //  同步校验用户是否登陆
     app.miniLoginCheck();
-    console.info('3')
     let me = this;
     // 查看是否授权
     wx.getSetting({
@@ -23,7 +23,7 @@ Page({
           me.initCurrentUserInfo()
         } else {
           // 向用户请求授权
-          me.pleaseAuthTome();
+          me.openUserAuthModal();
         }
 
         if (res.authSetting['scope.userLocation']) {
@@ -35,11 +35,32 @@ Page({
             scope: 'scope.userLocation',
             success() {
               me.getWxUserLocation()
+            },
+            fail: function(err) {
+              me.openUserAuthModal();
             }
           })
         }
       }
     })
+  },
+
+  /**
+   * 打开向用户获取授权的请求窗口
+   */
+  openUserAuthModal: function() {
+    if (!this.data.authModalVisible) {
+      this.setData({ authModalVisible: true})
+    }
+  },
+
+  /**
+   * 关闭提示授权窗口 并刷新页面
+   */
+  closeUserAuthModal: function () {
+    this.setData({ authModalVisible: false })
+    this.initCurrentUserInfo()
+    this.getWxUserLocation()
   },
 
   /**

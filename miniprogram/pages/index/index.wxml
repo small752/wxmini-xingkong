@@ -1,6 +1,10 @@
 <!--漂流瓶首页-->
 <view class="index-page-container">
-
+  <user-auth-modal
+    wx:if="{{authModalVisible}}"
+    visible="{{authModalVisible}}"
+    bind:onClose="closeUserAuthModal"
+  />
   <view class='index-menu-cont'>
     <view wx:if="{{userInfo.openid&& userInfo.openid.length > 0}}" class='index-menu-content'>
       <image

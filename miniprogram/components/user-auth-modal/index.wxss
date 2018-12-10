@@ -1,0 +1,51 @@
+/* components/user-auth-modal/index.wxss */
+.modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 101;
+}
+
+.modal-mosk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.801);
+}
+
+.modal-cont {
+  position: relative;
+  padding-top: 50%;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-content {
+  width: 80%;
+  display: inline-block;
+  background-color: #FFF;
+  border-radius: 10rpx;
+}
+
+.modal-title-cont {
+  font-size: 36rpx;
+  color: #000;
+  line-height: 2;
+  padding: 20rpx 10rpx;
+}
+
+.modal-desc-cont {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1;
+  padding-bottom: 30rpx;
+}
+
+.modal-btn-confirm {
+  color: #1890ff;
+}

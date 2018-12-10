@@ -4,7 +4,8 @@ App({
     baseUrl: 'https://www.yana.site/appweb',
     wxUserInfo: {},
     wxUserLocation: {},
-    _loginToken: {}
+    _loginToken: {},
+    needAuth: ['scope.userInfo', 'scope.userLocation']
   },
 
   onLaunch: function () {
@@ -22,18 +23,17 @@ App({
    * 登陆
    */
   miniLoginCheck: function() {
-    console.info('1')
     let me = this;
     wx.checkSession({
       success() {
-        console.info('小程序校验登陆信息有效')
+        if (!(me.globalData._loginToken && me.globalData._loginToken.token && me.globalData._loginToken.token.length > 0)) {
+          me._login();
+        }
       },
       fail(a, b, c) {
-        console.info('checkSession fail', a, b, c)
-        //  me._login();
+        me._login();
       }
     })
-    console.info('2')
   },
 
   /**
@@ -47,13 +47,14 @@ App({
           let postUrl = me.globalData.baseUrl + '/oauth/mini/autoCode?code=' + res.code;
           me.requestServerJson(postUrl, {}, function(result) {
             if (result && result.errorCode == 9000) {
-              console.info('异步登陆并获取信息', result)
               let res_data = result.data || {};
               me.globalData._loginToken = { ...res_data};
               wx.setStorage({
                 key: '_minilogintoken',
                 data: res_data.token
               })
+
+              console.info('after loign', res_data)
             }
           })
         }
@@ -65,12 +66,15 @@ App({
    * 异步json请求
    */
   requestServerJson: function (url, params = {}, suc, fail, showLoading=true) {
+    console.info('this.globalData', this.globalData)
+    let { wxUserinfo, _loginToken} = this.globalData;
+    if (wxUserinfo && wxUserinfo.appid && wxUserinfo.appid.length > 0) {
+      params.__appid = wxUserinfo && wxUserinfo.appid;
+      params.__openid = wxUserinfo && wxUserinfo.openid;
+    }
 
-    let global_wxUserInfo = this.globalData && this.globalData.wxUserinfo;
-
-    if (global_wxUserInfo && global_wxUserInfo.appid) {
-      params.__appid = global_wxUserInfo && global_wxUserInfo.appid;
-      params.__openid = global_wxUserInfo && global_wxUserInfo.openid;
+    if (_loginToken && _loginToken.token && _loginToken.token.length > 0) {
+      params.__token = _loginToken && _loginToken.token;
     }
 
     if (showLoading) {
@@ -78,7 +82,7 @@ App({
         title: '玩命加载中',
       })
     }
-
+    console.info('params', params)
     wx.request({
       url,
       data: { ...params},

@@ -4,6 +4,7 @@ App({
     baseUrl: 'https://www.yana.site/appweb',
     wxUserInfo: {},
     wxUserLocation: {},
+    _loginToken: {}
   },
 
   onLaunch: function () {
@@ -15,6 +16,49 @@ App({
         traceUser: true,
       })
     }
+  },
+
+  /**
+   * 登陆
+   */
+  miniLoginCheck: function() {
+    console.info('1')
+    let me = this;
+    wx.checkSession({
+      success() {
+        console.info('小程序校验登陆信息有效')
+      },
+      fail(a, b, c) {
+        console.info('checkSession fail', a, b, c)
+        //  me._login();
+      }
+    })
+    console.info('2')
+  },
+
+  /**
+   * 微信登陆
+   */
+  _login: function() {
+    let me = this;
+    wx.login({
+      success: function(res) {
+        if (res.code) {
+          let postUrl = me.globalData.baseUrl + '/oauth/mini/autoCode?code=' + res.code;
+          me.requestServerJson(postUrl, {}, function(result) {
+            if (result && result.errorCode == 9000) {
+              console.info('异步登陆并获取信息', result)
+              let res_data = result.data || {};
+              me.globalData._loginToken = { ...res_data};
+              wx.setStorage({
+                key: '_minilogintoken',
+                data: res_data.token
+              })
+            }
+          })
+        }
+      }
+    })
   },
 
   /**

@@ -10,7 +10,9 @@ Page({
   },
 
   onLoad: function() {
-    
+    //  同步校验用户是否登陆
+    app.miniLoginCheck();
+    console.info('3')
     let me = this;
     // 查看是否授权
     wx.getSetting({
@@ -118,7 +120,6 @@ Page({
   },
 
   initDraft: function() {
-    console.info('当前的地区是', this.data.filterAddress)
     let draftCount = this.data.draftCount;
     this.setData({ draftList: []})
     let draftList = [];

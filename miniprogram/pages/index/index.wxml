@@ -3,6 +3,7 @@
   <user-auth-modal
     wx:if="{{authModalVisible}}"
     visible="{{authModalVisible}}"
+    authInfo="{{authInfo}}"
     bind:onClose="closeUserAuthModal"
   />
   <view class='index-menu-cont'>

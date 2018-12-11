@@ -9,7 +9,15 @@
       <view class='modal-desc-cont'>
         这是必须的，且不会泄露您的隐私
       </view>
-      <button class='modal-btn-confirm' bindtap="openWxUserAuth">确定</button>
+      <button
+        wx:if="{{hasAuthUserInfo}}
+        class='modal-btn-confirm'
+        bindtap="openWxUserAuth">确定</button>
+      <button
+        wx:if="{{!hasAuthUserInfo}}
+        class='modal-btn-confirm'
+        open-type="getUserInfo" lang="zh_CN"
+        bindgetuserinfo="onGotUserInfo">确定</button>
     </view>
   </view>
 </view>

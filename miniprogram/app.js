@@ -4,7 +4,6 @@ App({
     baseUrl: 'https://www.yana.site/appweb',
     wxUserInfo: {},
     wxUserLocation: {},
-    _loginToken: {},
     needAuth: ['scope.userInfo', 'scope.userLocation']
   },
 
@@ -17,6 +16,7 @@ App({
         traceUser: true,
       })
     }
+    this.miniLoginCheck()
   },
 
   /**
@@ -26,11 +26,19 @@ App({
     let me = this;
     wx.checkSession({
       success() {
-        if (!(me.globalData._loginToken && me.globalData._loginToken.token && me.globalData._loginToken.token.length > 0)) {
+        console.info('登陆校验成功')
+        let _minitoken = wx.getStorageSync('_minitoken')
+        let _miniopenid = wx.getStorageSync('_miniopenid')
+
+        if (!(_minitoken && 
+          _minitoken.length > 0 && 
+          _miniopenid && 
+          _miniopenid.length > 0)) {
           me._login();
         }
       },
-      fail(a, b, c) {
+      fail() {
+		    console.info('登陆校验失败')
         me._login();
       }
     })
@@ -45,16 +53,24 @@ App({
       success: function(res) {
         if (res.code) {
           let postUrl = me.globalData.baseUrl + '/oauth/mini/autoCode?code=' + res.code;
-          me.requestServerJson(postUrl, {}, function(result) {
+          me.requestServer(postUrl, {}, function(result) {
             if (result && result.errorCode == 9000) {
               let res_data = result.data || {};
-              me.globalData._loginToken = { ...res_data};
               wx.setStorage({
-                key: '_minilogintoken',
+                key: '_minitoken',
                 data: res_data.token
+              })
+              wx.setStorage({
+                key: '_miniopenid',
+                data: res_data.openid
               })
 
               console.info('after loign', res_data)
+
+              //  首页重新加载
+              wx.reLaunch({
+                url: '/pages/index/index'
+              })
             }
           })
         }
@@ -63,37 +79,53 @@ App({
   },
 
   /**
+   * 登陆信息失效  重新登陆
+   */
+  relogin: function() {
+    let me = this;
+    wx.showModal({
+      title: '请稍等一下',
+      content: '或许您太久没来了',
+      showCancel: false,
+      success(res) {
+        if (res.confirm) {
+          me._login();
+        }
+      }
+    })
+  },
+
+  /**
    * 异步json请求
    */
-  requestServerJson: function (url, params = {}, suc, fail, showLoading=true) {
-    console.info('this.globalData', this.globalData)
-    let { wxUserinfo, _loginToken} = this.globalData;
-    if (wxUserinfo && wxUserinfo.appid && wxUserinfo.appid.length > 0) {
-      params.__appid = wxUserinfo && wxUserinfo.appid;
-      params.__openid = wxUserinfo && wxUserinfo.openid;
-    }
-
-    if (_loginToken && _loginToken.token && _loginToken.token.length > 0) {
-      params.__token = _loginToken && _loginToken.token;
-    }
-
+  requestServer: function (url, params = {}, suc, fail, showLoading=true) {
+    let me = this;
     if (showLoading) {
       wx.showLoading({
         title: '玩命加载中',
       })
     }
-    console.info('params', params)
+
+    //  统一配置请求参数
+    params = this.doPostParams(params)
+    
+    //  发起异步post请求
     wx.request({
       url,
       data: { ...params},
       method: 'POST',
       header: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       },
       complete: function (res) {
         // console.info('接口请求结果', res)
         if (res && res.statusCode == 200) {
-          suc && suc(res.data)
+          let res_data = res.data;
+          if (res_data && res_data.errorCode == 2000) {
+            me.relogin()  //  重新登陆
+          } else {
+            suc && suc(res.data)
+          }
         } else{
           fail && fail(err)
         }
@@ -103,6 +135,26 @@ App({
         }
       }
     })
+  },
+
+  /**
+   * 统一配置请求参数
+   */
+  doPostParams: function(obj) {
+    if(obj == undefined) {
+      obj = {};
+    }
+    let _minitoken = wx.getStorageSync('_minitoken')
+    let _miniopenid = wx.getStorageSync('_miniopenid')
+
+    if (_miniopenid && _miniopenid.length > 0) {
+      obj.__openid = _miniopenid;
+    }
+
+    if (_minitoken && _minitoken.length > 0) {
+      obj.__token = _minitoken;
+    }
+    return obj;
   },
 
 })

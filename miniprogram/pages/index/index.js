@@ -8,16 +8,16 @@ Page({
     userInfo: {},
     filterAddress: ['浙江省', '杭州市', '滨江区'],
     authModalVisible: false,
+    authInfo: '',// 当前用户授权信息
   },
 
   onLoad: function() {
-    //  同步校验用户是否登陆
-    app.miniLoginCheck();
     let me = this;
     // 查看是否授权
     wx.getSetting({
       success(res) {
         console.info('用户授权信息', res)
+        me.setData({ authInfo: res.authSetting && JSON.stringify(res.authSetting)})
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称
           me.initCurrentUserInfo()
@@ -85,7 +85,7 @@ Page({
   getLocationCity: function (longitude, latitude) {
     let me = this;
     let postUrl = app.globalData.baseUrl + '/baidu/index/location?latitude=' + latitude + '&longitude=' + longitude;
-    app.requestServerJson(postUrl, {}, function (res) {
+    app.requestServer(postUrl, {}, function (res) {
       if (res && res.errorCode == 9000) {
         let location_data = res.data || {};
         app.globalData.wxUserLocation = location_data;
@@ -102,7 +102,9 @@ Page({
     })
   },
 
-  //   请求用户授权给小程序
+  /**
+   * 请求用户授权给小程序
+   */
   pleaseAuthTome: function() {
     wx.authorize({
       scope: 'scope.userInfo',

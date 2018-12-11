@@ -1,2 +1,30 @@
 <!--miniprogram/pages/bottles/index.wxml-->
-<text>miniprogram/pages/bottles/index.wxml</text>
+<view class='page-container'>
+
+  <view class="search-container">
+    <we-searchbar></we-searchbar>
+  </view>
+
+  <scroll-view
+    scroll-y
+    bindscrolltoupper="upper"
+    bindscrolltolower="lower"
+    bindscroll="scroll"
+    scroll-into-view="{{toView}}"
+    scroll-top="{{scrollTop}}"
+    class='botles-list-container'
+  >
+
+    <view
+      wx:for="{{dataSource}}"
+      wx:for-index="idx"
+      wx:for-item="item"
+      wx:key="{{item.key}}"
+      class='botles-list-item-container'
+    >
+      {{item.title}}
+    </view>
+
+  </scroll-view>
+
+</view>

@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    count: 100,
+    dataSource: [],
   },
 
   /**
@@ -19,7 +20,15 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    let dataSource = []
+    for(let i = 0; i < this.data.count; i++) {
+      dataSource.push({
+        key: Math.floor(1000 + Math.random() * 1000) + '' + i,
+        title: '飒飒法发发发撒发撒哇' + i,
+      })
+    }
 
+    this.setData({ dataSource })
   },
 
   /**

@@ -47,7 +47,7 @@ App({
   /**
    * 微信登陆
    */
-  _login: function() {
+  _login: function (reLaunch) {
     let me = this;
     wx.login({
       success: function(res) {
@@ -67,10 +67,13 @@ App({
 
               console.info('after loign', res_data)
 
-              //  首页重新加载
-              wx.reLaunch({
-                url: '/pages/index/index'
-              })
+              if (reLaunch) {
+                //  首页重新加载
+                wx.reLaunch({
+                  url: '/pages/index/index'
+                })
+              }
+              
             }
           })
         }
@@ -89,7 +92,7 @@ App({
       showCancel: false,
       success(res) {
         if (res.confirm) {
-          me._login();
+          me._login(true);
         }
       }
     })

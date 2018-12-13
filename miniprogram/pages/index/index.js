@@ -188,16 +188,56 @@ Page({
    * 漂流瓶点击事件
    */
   bottleClick: function(event) {
+    let me = this;
     wx.vibrateShort()
     let e_target = event.target;
     let dataset = e_target && e_target.dataset;
-    console.info('dataset', dataset)
+    let key = dataset && dataset.bottlekey;
+
+    wx.showModal({
+      title: '这是来自一位女士',
+      content: '确定要打开吗',
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          let draftList = me.data.draftList;
+          draftList.map((item) => {
+            if (item.key == key) {
+              item.clicked = true;
+            }
+          })
+
+          me.setData({ draftList })
+
+          setTimeout(function() {
+            wx.navigateTo({
+              url: '/pages/form/index'
+            });
+          }, 200)
+          
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
   },
 
+  /**
+   * 跳转到创建漂流瓶界面
+   */
   routeToBottleFormPage: function() {
     wx.navigateTo({
       url: '/pages/form/index'
     });
-  }
+  },
+
+  /**
+   * 跳转到漂流瓶列表界面
+   */
+  routeToBottleListPage: function () {
+    wx.navigateTo({
+      url: '/pages/bottles/index'
+    });
+  },
 
 })

@@ -71,5 +71,9 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  bottleClick: function() {
+    console.info('bottle click');
   }
 })

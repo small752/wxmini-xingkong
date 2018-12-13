@@ -15,6 +15,7 @@
       <image
           class='bottle-menu-image'
           src="../../images/bottle.png"
+          bindtap="routeToBottleListPage"
       ></image>
 
       <view>
@@ -42,7 +43,7 @@
         wx:for-item="item"
         wx:key="{{item.key}}"
         style="left: {{item.rx+'%'}}; top: {{item.ry+'%'}}"
-        class='draft-item-image'
+        class='{{item.clicked? "draft-item-image-clicked":"draft-item-image"}}'
         bindtap="bottleClick"
         data-bottlekey="{{item.key}}"
         src="../../images/item.png"></image>

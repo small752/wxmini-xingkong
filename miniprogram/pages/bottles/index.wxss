@@ -12,3 +12,90 @@
   width: 100%;
   height: calc(100% - 48px);
 }
+
+.bottles-list-item-container {
+  width: 100%;
+}
+
+.bottle-list-item {
+  margin: 20rpx;
+  position: relative;
+}
+
+.bottle-user-headimg-cont {
+  display: inline-block;
+  width: 110rpx;
+  height: 110rpx;
+  position: relative;
+}
+
+.bottle-user-headimg {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-top: 16rpx;
+}
+
+.bottle-item-container {
+  width: calc(100% - 110rpx);
+  position: absolute;
+  height: 100%;
+  display: inline-flex;
+  padding-left: 20rpx;
+  border-top-left-radius: 10rpx;
+  border-bottom-left-radius: 10rpx;
+}
+
+.bottle-item-container-click {
+  background-color: #F1F1F1;
+}
+
+.bottle-item-split {
+  position: absolute;
+  right: 0;
+  bottom: -10rpx;
+  height: 1px;
+  width: 100%;
+  background-color: #F1F1F1;
+}
+
+.bottle-obj-cont {
+  width: calc(100% - 110rpx);
+  padding: 20rpx 0;
+
+}
+
+.bottle-target-name {
+  width: 100%;
+  font-size: 32rpx;
+  color: #000;
+  font-weight: bold;
+  line-height: 45rpx;
+  height: 45rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.bottle-last-msg-text {
+  width: 100%;
+  font-size: 30rpx;
+  color: #666;
+  line-height: 45rpx;
+  height: 45rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  margin-top: 10rpx;
+}
+
+.bottle-time-cont {
+  width: 110rpx;
+  padding-top: 20rpx;
+}
+
+.bottle-last-msg-time {
+  font-size: 28rpx;
+  color: #999;
+  text-align: center;
+}

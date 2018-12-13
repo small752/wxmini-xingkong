@@ -69,9 +69,31 @@
   animation: draft_item_anim 2s ease-in-out 0s infinite alternate;
 }
 
+.draft-item-image-clicked {
+  transform: translate(0,-100px);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: #FFF;
+  position: absolute;
+  z-index: 50;
+  animation: draft_item_anim_clicked 2s;
+  animation-fill-mode:forwards;
+}
+
 @keyframes draft_item_anim{
-from{transform:translate(0,0)}
-to{transform:translate(0,10px)}
+  from{transform:translate(0,0)}
+  to{transform:translate(0,10px)}
+}
+
+@keyframes draft_item_anim_clicked {
+  from{
+    transform:translate(0,0);
+  }
+  to{
+    transform:translate(0, -1000px);
+  }
 }
 
 .create-bottle-menu-cont {

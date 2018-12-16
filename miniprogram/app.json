@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/chat/index",
     "pages/index/index",
     "pages/form/index",
+    "pages/chat/index",
     "pages/bottles/index"
   ],
   "window": {

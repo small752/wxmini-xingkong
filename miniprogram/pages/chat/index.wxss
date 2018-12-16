@@ -10,7 +10,7 @@
 }
 
 .chat-record-container {
-  height: calc(100% - 55px);
+  height: calc(100% - 60px);
   width: 100%;
   overflow-y: auto;
   background-color: rgba(221, 221, 221, 0.3);
@@ -47,4 +47,108 @@
 
 .send-msg-btn-hover {
   background-color: rgba(25, 173, 25, 0.3);
+}
+
+/*消息聊天记录*/
+
+.chat-record-item {
+  margin: 0;
+  padding: 20rpx 30rpx;
+}
+
+.chat-record-item-content {
+  position: relative;
+}
+
+.chat-target-me .chat-text-content-cont {
+  width: calc(100% - 100rpx);
+  display: inline-block;
+  position: relative;
+  text-align: right;
+}
+
+.chat-target-other .chat-text-content-cont {
+  width: calc(100% - 100rpx);
+  display: inline-block;
+  position: relative;
+  text-align: left;
+}
+
+.chat-text-container {
+  width: 80%;
+  display: inline-block;
+}
+.chat-target-me .chat-text-content-warp {
+  display: inline-block;
+  background-color: rgba(90, 215, 60, 0.9);
+  font-size: 28rpx;
+  line-height: 36rpx;
+  padding: 16rpx;
+  letter-spacing: 2rpx;
+  color: #0F0F0F;
+  text-align: left;
+  border-radius: 10rpx;
+  position: relative;
+}
+
+.chat-target-me .chat-text-content-warp:after{
+  content: '';
+  position: absolute;
+  left: 99%;
+  top: 7px;
+  width: 0;
+  height: 0;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent;
+  border-left-color:rgba(90, 215, 60, 0.9);
+  color:rgba(90, 215, 60, 0.9);
+}
+
+.chat-target-other .chat-text-content-warp {
+  display: inline-block;
+  background-color: rgba(99, 185, 255, 0.4);
+  font-size: 28rpx;
+  line-height: 36rpx;
+  padding: 16rpx;
+  letter-spacing: 2rpx;
+  color: #0F0F0F;
+  text-align: left;
+  border-radius: 10rpx;
+  position: relative;
+}
+
+.chat-target-other .chat-text-content-warp:after{
+  content:'';
+  position:absolute;
+  right:100%;
+  top: 7px;
+  width:0;
+  height:0;
+  border-width:10px;
+  border-style:solid;
+  border-color:transparent;
+  border-right-color: currentColor;
+  color:rgba(99, 185, 255, 0.4);
+}
+
+.chat-target-me .chat-headimg-image-cont {
+  width: 100rpx;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-align: right;
+}
+
+.chat-target-other .chat-headimg-image-cont {
+  width: 100rpx;
+  text-align: left;
+  float: left;
+}
+
+.chat-headimg-image {
+  width: 80rpx;
+  height: 80rpx;
+  display: inline-block;
 }

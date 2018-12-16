@@ -211,7 +211,7 @@ Page({
 
           setTimeout(function() {
             wx.navigateTo({
-              url: '/pages/form/index'
+              url: '/pages/chat/index'
             });
           }, 200)
           

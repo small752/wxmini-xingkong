@@ -74,6 +74,10 @@ Page({
   },
 
   bottleClick: function() {
-    console.info('bottle click');
+    setTimeout(function () {
+      wx.navigateTo({
+        url: '/pages/chat/index'
+      });
+    }, 200)
   }
 })

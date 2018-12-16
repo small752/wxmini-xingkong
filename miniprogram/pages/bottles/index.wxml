@@ -21,7 +21,7 @@
         <view class='bottle-user-headimg-cont'>
           <image
             class='bottle-user-headimg'
-            mode="scaleToFill" 
+            mode="scaleToFill"
             src="https://img.ishanshan.com/gimg/n/20181213/14cff801ecfc36eeefdd23f65b5f9f18"></image>
         </view>
         <view class='bottle-item-container' hover-class='bottle-item-container-click' bindtap="bottleClick">

@@ -1,0 +1,41 @@
+<!--miniprogram/pages/chat/index.wxml-->
+<view class="page-container">
+
+  <scroll-view
+    scroll-y
+    class='chat-record-container'
+  >
+    <view class='chat-record-section'>
+
+      <view class='chat-record-item chat-target-me'>
+
+      </view>
+
+      <view class='chat-record-item chat-target-other'>
+      
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class='chat-input-cont'>
+    <textarea
+      class='chat-input'
+      placeholder="请输入你想说的话"
+      placeholder-class='chat-placeholder'
+      maxlength="200"
+      show-confirm-bar="{{false}}"
+      adjust-position="{{true}}"
+      cursor-spacing="24"
+    />
+
+    <button
+      type="primary"
+      size="mini"
+      loading="{{loading}}"
+      hover-class="send-msg-btn-hover"
+      class='send-msg-btn'
+    >
+      发送
+    </button>
+  </view>
+</view>

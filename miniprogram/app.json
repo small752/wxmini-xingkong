@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/chat/index",
     "pages/index/index",
     "pages/form/index",
     "pages/bottles/index"
@@ -7,8 +8,8 @@
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#0F0F0F",
+    "navigationBarTitleText": "纸鹤飞",
+    "navigationBarTextStyle": "white"
   }
 }

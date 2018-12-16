@@ -1,0 +1,50 @@
+/* miniprogram/pages/chat/index.wxss */
+.page-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  /* background-image: url('https://img.ishanshan.com/gimg/n/20181216/7e2a36158d2a811e1db757f8344cd6ad'); */
+  background-size: 100% 100%;
+  display:block;
+  background-color: #FFF;
+}
+
+.chat-record-container {
+  height: calc(100% - 55px);
+  width: 100%;
+  overflow-y: auto;
+  background-color: rgba(221, 221, 221, 0.3);
+}
+
+.chat-input-cont {
+  height: 50px;
+  position: relative;
+  padding: 16rpx 16rpx 8rpx 16rpx;
+}
+
+.chat-placeholder {
+  font-size: 18px;
+  line-height: 18px;
+  color: #999;
+}
+
+.chat-input {
+  width: calc(100% - 80px);
+  border-bottom: 1px solid #DDD;
+  font-size: 18px;
+  line-height: 18px;
+  padding-bottom: 12rpx;
+  height: 36px;
+  color: #666;
+}
+
+.send-msg-btn {
+  width: 70px;
+  position: absolute;
+  right: 10px;
+  top: 14px;
+}
+
+.send-msg-btn-hover {
+  background-color: rgba(25, 173, 25, 0.3);
+}

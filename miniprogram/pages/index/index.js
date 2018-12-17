@@ -135,8 +135,17 @@ Page({
             me.setData({
               userInfo: wxUserinfo,
             })
+
+            //  注册用户信息
+            let postUrl = app.globalData.bizUrl + '/bt/user/regist';
+            app.requestServer(postUrl, {...wxUserinfo}, function (resRegist) {
+              if (resRegist && resRegist.errorCode != 9000) {
+                console.info('用户注册失败')
+              }
+            })
           }
         })
+
       }
     };
     wx.getUserInfo(options);

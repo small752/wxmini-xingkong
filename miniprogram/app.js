@@ -2,6 +2,7 @@
 App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
+    bizUrl: 'https://www.yana.site/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
     needAuth: ['scope.userInfo', 'scope.userLocation']
@@ -127,10 +128,10 @@ App({
           if (res_data && res_data.errorCode == 2000) {
             me.relogin()  //  重新登陆
           } else {
-            suc && suc(res.data)
+            suc && suc(res_data)
           }
         } else{
-          fail && fail(err)
+          fail && fail(res)
         }
 
         if (showLoading) {

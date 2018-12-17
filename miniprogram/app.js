@@ -119,7 +119,7 @@ App({
       data: { ...params},
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8'
       },
       complete: function (res) {
         // console.info('接口请求结果', res)

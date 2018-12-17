@@ -10,7 +10,7 @@
 	},
 	"appid": "wx1819c6e21846613a",
 	"projectname": "wxmini-xingkong",
-	"libVersion": "2.2.5",
+	"libVersion": "2.4.2",
 	"compileType": "miniprogram",
 	"condition": {
 		"search": {

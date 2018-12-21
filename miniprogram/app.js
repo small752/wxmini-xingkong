@@ -2,7 +2,8 @@
 App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
-    bizUrl: 'https://www.yana.site/biz/service',
+    // bizUrl: 'https://www.yana.site/biz/service',
+    bizUrl: 'https://dev.yana.site/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
     needAuth: ['scope.userInfo', 'scope.userLocation']
@@ -116,10 +117,10 @@ App({
     //  发起异步post请求
     wx.request({
       url,
-      data: { ...params},
+      data: params,
       method: 'POST',
       header: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'content-type': 'application/json;charset=utf-8'
       },
       complete: function (res) {
         // console.info('接口请求结果', res)

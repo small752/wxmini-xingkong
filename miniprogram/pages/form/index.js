@@ -22,29 +22,8 @@ Page({
    */
   onShow: function () {
     let me = this;
-    let questionLibs = [
-      {
-        id: '0',
-        title: '不考虑现实因素，最想做的工作是?'
-      },
-      {
-        id: '1',
-        title: '不考虑现实因素，最想做的工作是?'
-      },
-      {
-        id: '2',
-        title: '不考虑现实因素，最想做的工作是?'
-      },
-      {
-        id: '3',
-        title: '不考虑现实因素，最想做的工作是?'
-      },
-      {
-        id: '4',
-        title: '不考虑现实因素，最想做的工 不考虑现实因素，最想做的工作是不考虑现实因素，最想做的工作是作是?'
-      }
-    ];
-
+    this.queryTopics()
+    //  从全局设置中获取当前用户信息和位置
     let user_location = [];
     let { wxUserLocation, wxUserInfo} = app.globalData;
 
@@ -57,7 +36,7 @@ Page({
     let gender = wxUserInfo.gender == 1 ? 'female' : 'male';
     current_target.gender = gender;
 
-    me.setData({ target: current_target, questionLibs, })
+    me.setData({ target: current_target, })
   },
 
   
@@ -85,6 +64,42 @@ Page({
     })
   },
 
+  queryTopics: function(count=6) {
+    let me = this;
+    let questionLibs = [
+      {
+        id: '0',
+        title: '不考虑现实因素，最想做的工作是?'
+      },
+      {
+        id: '1',
+        title: '不考虑现实因素，最想做的工作是?'
+      },
+      {
+        id: '2',
+        title: '不考虑现实因素，最想做的工作是?'
+      },
+      {
+        id: '3',
+        title: '不考虑现实因素，最想做的工作是?'
+      },
+      {
+        id: '4',
+        title: '不考虑现实因素，最想做的工 不考虑现实因素，最想做的工作是不考虑现实因素，最想做的工作是作是?'
+      }
+    ];
+
+    let postUrl = app.globalData.bizUrl + '/bt/topic/queryList';
+    app.requestServer(postUrl, { count}, function (res) {
+      if (res && res.errorCode == 9000) {
+        if (res.results && res.results.length > 0) {
+          questionLibs = res.results;
+          me.setData({ questionLibs })
+        }
+      }
+    })
+  },
+
   /**
    * 选择话题变更
    */
@@ -104,7 +119,7 @@ Page({
   createQuestionChange: function(event) {
     this.setData({
       selectQuestion: {
-        id: 'create',
+        id: '',
         title: event && event.detail && event.detail.value
       }
     })
@@ -114,14 +129,53 @@ Page({
    * 换一批新的问题库
    */
   refreshQuestionLib: function() {
-    console.info('换一批新的问题库')
+    this.queryTopics()
   },
 
   /**
    * 提交创建新的漂流瓶
    */
   submitCreateBottle: function() {
-    console.info('提交创建新的漂流瓶')
+    let me = this;
+
+    let { selectQuestion, target} = this.data;
+    let address = (target && target.address) || [];
+    let gender = target && target.gender;
+
+    let provice = '',city = '',area = '';
+    for (let i = 0; i < address.length; i++) {
+      if(i == 0) {
+        provice = address[i];
+      } else if(i == 1) {
+        city = address[i];
+      } else if (i == 2) {
+        area = address[i];
+      }
+    }
+
+    let postUrl = app.globalData.bizUrl + '/bt/bottle/create';
+    let params = {
+      provice, city, area, gender,
+      topicId: selectQuestion && selectQuestion.id,
+      topicContent: selectQuestion && selectQuestion.title,
+      type: 'text',
+    };
+    app.requestServer(postUrl, params, function (res) {
+      if (res && res.errorCode == 9000) {
+        wx.showToast({
+          title: '扔的漂亮',
+          icon: 'success',
+          duration: 1000,
+          success: function() {
+            wx.redirectTo({
+              url: '/pages/index/index'
+            });
+          }
+        })
+        
+      }
+    }, undefined, false)
+
   },
 
 })

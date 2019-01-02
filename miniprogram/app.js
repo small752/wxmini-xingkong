@@ -121,7 +121,9 @@ App({
       method: 'POST',
       header: {
         'content-type': 'application/json;charset=utf-8'
+        // 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
+      // },
       complete: function (res) {
         // console.info('接口请求结果', res)
         if (res && res.statusCode == 200) {

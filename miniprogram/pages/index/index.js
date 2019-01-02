@@ -152,6 +152,7 @@ Page({
   },
 
   initDraft: function() {
+    console.info('获取漂流瓶', this.data)
     let draftCount = this.data.draftCount;
     this.setData({ draftList: []})
     let draftList = [];

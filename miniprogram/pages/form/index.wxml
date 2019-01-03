@@ -26,12 +26,12 @@
       <button
         bindtap="selectTargetGender"
         data-gender="1"
-        class="gender-select-btn {{target.gender=='male'? 'gender-select-btn-active':''}}"
+        class="gender-select-btn {{target.gender=='1'? 'gender-select-btn-active':''}}"
       >男生</button>
       <button
         bindtap="selectTargetGender"
         data-gender="2"
-        class="gender-select-btn {{target.gender=='female'? 'gender-select-btn-active':''}}"
+        class="gender-select-btn {{target.gender=='2'? 'gender-select-btn-active':''}}"
       >女生</button>
     </view>
 

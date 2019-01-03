@@ -46,6 +46,7 @@
         class='{{item.clicked? "draft-item-image-clicked":"draft-item-image"}}'
         bindtap="bottleClick"
         data-bottlekey="{{item.key}}"
+        data-bottle="{{item}}"
         src="../../images/item.png"></image>
 
       <view class='create-bottle-menu-cont'>

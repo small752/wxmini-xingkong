@@ -33,7 +33,7 @@ Page({
     let current_target = me.data.target;
     current_target.address = user_location;
 
-    let gender = wxUserInfo.gender == 1 ? 'female' : 'male';
+    let gender = wxUserInfo.gender == 1 ? '2' : '1';
     current_target.gender = gender;
 
     me.setData({ target: current_target, })

@@ -103,19 +103,6 @@ Page({
   },
 
   /**
-   * 请求用户授权给小程序
-   */
-  pleaseAuthTome: function() {
-    wx.authorize({
-      scope: 'scope.userInfo',
-      success() {
-        // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-        wx.startRecord()
-      }
-    })
-  },
-
-  /**
    * 获取当前用户信息
    */
   initCurrentUserInfo: function() {
@@ -152,15 +139,10 @@ Page({
   },
 
   initDraft: function() {
-    console.info('获取漂流瓶', this.data)
     let draftCount = this.data.draftCount;
     this.setData({ draftList: []})
 
     this.queryDraft(draftCount);
-    // let draftList = [];
-    // for (let i = 0; i < draftCount; i++) {
-    //   setTimeout(this.createDraft, i * 0.1 * 1000)
-    // }
   },
 
   queryDraft: function(count=10) {
@@ -193,7 +175,6 @@ Page({
   },
 
   createDraft: function(item) {
-    console.info('生成漂流瓶', item)
     let draftList = this.data.draftList;
 
     let rx = Math.random() * 100;
@@ -206,7 +187,8 @@ Page({
     draftList.push({
       key: draftList.length + '',
       rx, ry,
-      styleObj: { left: rx + '%', top: ry + '%' }
+      styleObj: { left: rx + '%', top: ry + '%' },
+      bottle: item,
     })
 
     this.setData({
@@ -235,31 +217,47 @@ Page({
     let e_target = event.target;
     let dataset = e_target && e_target.dataset;
     let key = dataset && dataset.bottlekey;
+    let bottle = dataset && dataset.bottle;
+
+    let bottleObj = (bottle && bottle.bottle) || {};
 
     wx.showModal({
-      title: '这是来自一位女士',
-      content: '确定要打开吗',
+      title: '',
+      content: '"' + bottleObj.content + '"' || '确定要打开这个吗?',
       success(res) {
         if (res.confirm) {
-          console.log('用户点击确定')
           let draftList = me.data.draftList;
           draftList.map((item) => {
             if (item.key == key) {
               item.clicked = true;
             }
           })
-
           me.setData({ draftList })
 
-          setTimeout(function() {
-            wx.navigateTo({
-              url: '/pages/chat/index'
-            });
-          }, 200)
-          
+          me.openBottle(bottleObj);
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
+      }
+    })
+  },
+
+  /**
+   * 打开某个漂流瓶
+   */
+  openBottle: function(bottle={}) {
+    let me = this;
+    let postUrl = app.globalData.bizUrl + '/bt/bottle/openBottle';
+    let params = {
+      id: bottle.id
+    }
+    app.requestServer(postUrl, params, function (res) {
+      if (res && res.errorCode == 9000) {
+        setTimeout(function () {
+          wx.navigateTo({
+            url: '/pages/chat/index'
+          });
+        }, 200)
       }
     })
   },

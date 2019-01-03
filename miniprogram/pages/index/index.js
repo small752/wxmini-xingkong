@@ -155,13 +155,45 @@ Page({
     console.info('获取漂流瓶', this.data)
     let draftCount = this.data.draftCount;
     this.setData({ draftList: []})
-    let draftList = [];
-    for (let i = 0; i < draftCount; i++) {
-      setTimeout(this.createDraft, i * 0.1 * 1000)
-    }
+
+    this.queryDraft(draftCount);
+    // let draftList = [];
+    // for (let i = 0; i < draftCount; i++) {
+    //   setTimeout(this.createDraft, i * 0.1 * 1000)
+    // }
   },
 
-  createDraft: function() {
+  queryDraft: function(count=10) {
+    let me = this;
+    let postUrl = app.globalData.bizUrl + '/bt/bottle/queryList';
+    let filterAddress = this.data.filterAddress || [];
+    let provice = '', city = '', area = '';
+    for (let i = 0; i < filterAddress.length; i++) {
+      if (i == 0) {
+        provice = filterAddress[i];
+      } else if (i == 1) {
+        city = filterAddress[i];
+      } else if (i == 2) {
+        area = filterAddress[i];
+      }
+    }
+
+    let params = {
+      count, provice, city, area,
+    }
+    app.requestServer(postUrl, params, function (res) {
+      if (res && res.errorCode == 9000) {
+        for (let i = 0; i < res.results.length; i++) {
+          setTimeout(function() {
+            me.createDraft(res.results[i])
+          }, i * 0.1 * 1000)
+        }
+      }
+    })
+  },
+
+  createDraft: function(item) {
+    console.info('生成漂流瓶', item)
     let draftList = this.data.draftList;
 
     let rx = Math.random() * 100;

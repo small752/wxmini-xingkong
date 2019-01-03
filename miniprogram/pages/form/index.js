@@ -156,10 +156,19 @@ Page({
     let postUrl = app.globalData.bizUrl + '/bt/bottle/create';
     let params = {
       provice, city, area, gender,
-      topicId: selectQuestion && selectQuestion.id,
-      topicContent: selectQuestion && selectQuestion.title,
+      topicId: (selectQuestion && selectQuestion.id) || '',
+      topicContent: (selectQuestion && selectQuestion.title) || '',
       type: 'text',
     };
+
+    if (params.topicId == '' && params.topicContent == '') {
+      wx.showToast({
+        title: '请选择一个话题作为开始',
+        icon: 'none',
+        duration: 1000,
+      })
+      return
+    }
     app.requestServer(postUrl, params, function (res) {
       if (res && res.errorCode == 9000) {
         wx.showToast({
@@ -167,12 +176,17 @@ Page({
           icon: 'success',
           duration: 1000,
           success: function() {
-            wx.redirectTo({
-              url: '/pages/index/index'
-            });
+            wx.navigateBack({
+              delta: 1
+            })
           }
         })
-        
+      } else {
+        wx.showToast({
+          title: (res && res.errorMessage) || '创建出现差错了',
+          icon: 'none',
+          duration: 1000,
+        })
       }
     }, undefined, false)
 

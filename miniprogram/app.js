@@ -3,7 +3,7 @@ App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
     // bizUrl: 'https://www.yana.site/biz/service',
-    bizUrl: 'https://dev.yana.site/biz/service',
+    bizUrl: 'http://127.0.0.1:8082/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
     needAuth: ['scope.userInfo', 'scope.userLocation']

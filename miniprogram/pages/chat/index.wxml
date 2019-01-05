@@ -69,9 +69,12 @@
       show-confirm-bar="{{false}}"
       adjust-position="{{true}}"
       cursor-spacing="24"
+      value='{{inputMsg}}'
+      bindinput="handleOnSendMsgChange"
     />
 
     <button
+      bindtap="handleOnSendMsg"
       type="primary"
       size="mini"
       loading="{{loading}}"

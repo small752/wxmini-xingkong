@@ -251,8 +251,16 @@ Page({
     let params = {
       id: bottle.id
     }
+    
     app.requestServer(postUrl, params, function (res) {
       if (res && res.errorCode == 9000) {
+        let resData = res.data;
+        let chating = {
+          userId: resData.authorId,
+          userName: resData.authorName,
+          headimg: resData.authorHeadimg,
+        }
+        app.globalData.chating = chating;
         setTimeout(function () {
           wx.navigateTo({
             url: '/pages/chat/index'

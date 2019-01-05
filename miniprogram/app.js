@@ -2,11 +2,22 @@
 App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
-    // bizUrl: 'https://www.yana.site/biz/service',
-    bizUrl: 'http://127.0.0.1:8082/biz/service',
+    bizUrl: 'https://dev.yana.site/biz/service',
+    // bizUrl: 'http://127.0.0.1:8082/biz/service',
+    socketUrl: 'wss://dev.yana.site/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
-    needAuth: ['scope.userInfo', 'scope.userLocation']
+    needAuth: ['scope.userInfo', 'scope.userLocation'],
+    chating: {  //  当前聊天对象
+      userId: '',
+      userName: '',
+      headimg: '',
+    },
+
+    socketObj: {
+      open: false,
+      msgQueue: ['你厉害 '],
+    }
   },
 
   onLaunch: function () {
@@ -19,6 +30,56 @@ App({
       })
     }
     this.miniLoginCheck()
+  },
+
+  onShow: function() {
+    let me = this;
+    console.info('app onshow')
+    //  建立socket链接
+    wx.connectSocket({
+      url: me.globalData.socketUrl + '/bottlesocket',
+      header: {
+        'content-type': 'application/json;charset=utf-8'
+      },
+      method: 'POST'
+    })
+
+    wx.onSocketOpen(function (res) {
+      console.info('onSocketOpen', res)
+      me.globalData.socketObj.open = true
+      for (let i = 0; i < me.globalData.socketObj.msgQueue.length; i++) {
+        me.sendSocketMessage(me.globalData.socketObj.msgQueue[i])
+      }
+      me.globalData.socketObj.msgQueue = []
+    })
+
+    wx.onSocketClose(function (res) {
+      console.log('WebSocket 已关闭！')
+      me.globalData.socketObj.open = false
+    })
+
+    wx.onSocketMessage(function(res) {
+      console.log('WebSocket 收到消息', res)
+    })
+  },
+
+  sendSocketMessage: function(msg) {
+    let me = this;
+    if (me.globalData.socketObj.open) {
+      wx.sendSocketMessage({
+        data: msg
+      })
+    } else {
+      me.globalData.socketObj.msgQueue.push(msg)
+    }
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+    console.info('app onhide')
+    wx.closeSocket()
   },
 
   /**

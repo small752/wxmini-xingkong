@@ -11,5 +11,10 @@
     "navigationBarBackgroundColor": "#0F0F0F",
     "navigationBarTitleText": "纸鹤飞",
     "navigationBarTextStyle": "white"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于更好地为您匹配"
+    }
   }
 }

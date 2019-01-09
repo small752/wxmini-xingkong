@@ -128,6 +128,9 @@ Page({
             app.requestServer(postUrl, {...wxUserinfo}, function (resRegist) {
               if (resRegist && resRegist.errorCode != 9000) {
                 console.info('用户注册失败')
+              } else {
+                let userId = resRegist.data && resRegist.data.userId;
+                app.globalData.wxUserInfo.userId = userId;
               }
             })
           }

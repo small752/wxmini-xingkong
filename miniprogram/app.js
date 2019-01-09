@@ -2,9 +2,9 @@
 App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
-    bizUrl: 'https://dev.yana.site/biz/service',
-    // bizUrl: 'http://127.0.0.1:8082/biz/service',
-    socketUrl: 'wss://dev.yana.site/biz/service',
+    // bizUrl: 'https://dev.yana.site/biz/service',
+    bizUrl: 'https://127.0.0.1/biz/service',
+    socketUrl: 'wss://127.0.0.1/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
     needAuth: ['scope.userInfo', 'scope.userLocation'],
@@ -16,7 +16,8 @@ App({
 
     socketObj: {
       open: false,
-      msgQueue: ['你厉害 '],
+      liveListenTime: undefined,//  心跳检测
+      msgQueue: [],
     }
   },
 
@@ -33,45 +34,7 @@ App({
   },
 
   onShow: function() {
-    let me = this;
-    console.info('app onshow')
-    //  建立socket链接
-    wx.connectSocket({
-      url: me.globalData.socketUrl + '/bottlesocket',
-      header: {
-        'content-type': 'application/json;charset=utf-8'
-      },
-      method: 'POST'
-    })
-
-    wx.onSocketOpen(function (res) {
-      console.info('onSocketOpen', res)
-      me.globalData.socketObj.open = true
-      for (let i = 0; i < me.globalData.socketObj.msgQueue.length; i++) {
-        me.sendSocketMessage(me.globalData.socketObj.msgQueue[i])
-      }
-      me.globalData.socketObj.msgQueue = []
-    })
-
-    wx.onSocketClose(function (res) {
-      console.log('WebSocket 已关闭！')
-      me.globalData.socketObj.open = false
-    })
-
-    wx.onSocketMessage(function(res) {
-      console.log('WebSocket 收到消息', res)
-    })
-  },
-
-  sendSocketMessage: function(msg) {
-    let me = this;
-    if (me.globalData.socketObj.open) {
-      wx.sendSocketMessage({
-        data: msg
-      })
-    } else {
-      me.globalData.socketObj.msgQueue.push(msg)
-    }
+    this.beginSocketListen();
   },
 
   /**
@@ -223,6 +186,89 @@ App({
       obj.__token = _minitoken;
     }
     return obj;
+  },
+
+  /**
+   * 开始监听socket
+   */
+  beginSocketListen: function() {
+    let me = this;
+
+    let currentUserId = me.globalData.wxUserInfo && me.globalData.wxUserInfo.userId;
+    console.info('开始监听socket', currentUserId);
+    if (!(currentUserId && currentUserId.length > 0)) {
+      setTimeout(function(){
+        me.beginSocketListen();
+      }, 500)
+      return;
+    }
+    //  建立socket链接
+    wx.connectSocket({
+      url: me.globalData.socketUrl + '/bottlesocket/' + currentUserId,
+      header: {
+        'content-type': 'application/json;charset=utf-8'
+      },
+      method: 'POST'
+    })
+
+    wx.onSocketOpen(function (res) {
+      console.info('onSocketOpen', res)
+      me.globalData.socketObj.open = true
+      for (let i = 0; i < me.globalData.socketObj.msgQueue.length; i++) {
+        me.sendSocketMessage(me.globalData.socketObj.msgQueue[i])
+      }
+      me.globalData.socketObj.msgQueue = [];
+
+      //  开启心跳检测
+      me.globalData.socketObj.liveListenTime = setInterval(function() {
+        me.createSocketMessage('life', '', '', '', '心跳检测')
+      }, 5000);
+
+    })
+
+    wx.onSocketClose(function (res) {
+      console.log('WebSocket 已关闭！')
+      me.globalData.socketObj.open = false;
+      if (me.globalData.socketObj.liveListenTime != undefined) {
+        clearInterval(me.globalData.socketObj.liveListenTime)
+      }
+    })
+
+    wx.onSocketMessage(function (res) {
+      console.log('WebSocket 收到消息', res)
+    })
+  },
+
+  /**
+   * 创建消息并发送
+   */
+  createSocketMessage: function (type, toUserId, contentType, bottleId, message) {
+    let me = this;
+    let currentUserId = me.globalData.wxUserInfo && me.globalData.wxUserInfo.userId;
+    let msgObj = {
+      type,
+      fromUserId: currentUserId,
+      toUserId,
+      bottleId,
+      contentType,
+      message,
+    };
+
+    me.sendSocketMessage(JSON.stringify(msgObj));
+  },
+
+  /**
+   * 向后台发送socket消息
+   */
+  sendSocketMessage: function (msg) {
+    let me = this;
+    if (me.globalData.socketObj.open) {
+      wx.sendSocketMessage({
+        data: msg
+      })
+    } else {
+      me.globalData.socketObj.msgQueue.push(msg)
+    }
   },
 
 })

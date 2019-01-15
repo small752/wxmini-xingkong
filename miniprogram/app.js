@@ -2,9 +2,10 @@
 App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
-    // bizUrl: 'https://dev.yana.site/biz/service',
-    bizUrl: 'https://127.0.0.1/biz/service',
-    socketUrl: 'wss://127.0.0.1/biz/service',
+    // bizUrl: 'https://www.yana.site/biz/service',
+    // socketUrl: 'wss://www.yana.site/biz/service',
+    bizUrl: 'https://dev.yana.site/biz/service',
+    socketUrl: 'wss://dev.yana.site/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
     needAuth: ['scope.userInfo', 'scope.userLocation'],
@@ -12,10 +13,13 @@ App({
       userId: '',
       userName: '',
       headimg: '',
+      bottleId: '',
     },
 
     socketObj: {
       open: false,
+      relinkTimes: 0,// 连接重连次数
+      maxRelinkTimes: 10,// 最大重连次数 超过则超时
       liveListenTime: undefined,//  心跳检测
       msgQueue: [],
     }
@@ -194,8 +198,14 @@ App({
   beginSocketListen: function() {
     let me = this;
 
+    me.globalData.socketObj.relinkTimes++;
+    if (me.globalData.socketObj.relinkTimes > me.globalData.socketObj.maxRelinkTimes) {
+      wx.showLoading({
+        title: '网路连接异常',
+      })
+      return;
+    }
     let currentUserId = me.globalData.wxUserInfo && me.globalData.wxUserInfo.userId;
-    console.info('开始监听socket', currentUserId);
     if (!(currentUserId && currentUserId.length > 0)) {
       setTimeout(function(){
         me.beginSocketListen();
@@ -212,7 +222,7 @@ App({
     })
 
     wx.onSocketOpen(function (res) {
-      console.info('onSocketOpen', res)
+      console.log('WebSocket 已开启!')
       me.globalData.socketObj.open = true
       for (let i = 0; i < me.globalData.socketObj.msgQueue.length; i++) {
         me.sendSocketMessage(me.globalData.socketObj.msgQueue[i])
@@ -222,7 +232,7 @@ App({
       //  开启心跳检测
       me.globalData.socketObj.liveListenTime = setInterval(function() {
         me.createSocketMessage('life', '', '', '', '心跳检测')
-      }, 5000);
+      }, 15000);
 
     })
 
@@ -235,7 +245,7 @@ App({
     })
 
     wx.onSocketMessage(function (res) {
-      console.log('WebSocket 收到消息', res)
+      console.log('app WebSocket 收到消息', res)
     })
   },
 

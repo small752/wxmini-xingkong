@@ -262,6 +262,7 @@ Page({
           userId: resData.authorId,
           userName: resData.authorName,
           headimg: resData.authorHeadimg,
+          bottleId: resData.bottleId,
         }
         app.globalData.chating = chating;
         setTimeout(function () {

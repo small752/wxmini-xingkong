@@ -11,6 +11,7 @@ Page({
     dataSource: [],// 聊天内容列表
     loading: false,
     inputMsg: '',
+    chatingObj: {},// 当前聊天对象
   },
 
   /**
@@ -19,42 +20,22 @@ Page({
   onShow: function () {
     
     let globalData = app.globalData;
-    console.info('globalData', globalData)
+    let chatingObj = globalData.chating || {};
+
     wx.setNavigationBarTitle({
-      title:  '陈芬',
-      success: function() {
-        console.info('导航设置成功')
-      }
+      title: chatingObj.userName || '匿名',
     })
 
-    let dataSource = [];
-    for(let i = 0; i < 20; i++) {
-
-      let textWordMap = '颠覆国家开放不能带来改变风格南京南京看发你的健康肤色打击开发商的艰苦奋斗空间';
-      let textCount = Math.floor(Math.random() * 50) + 5;
-
-      let contentText = '';
-      for (let tn = 0; tn < textCount; tn++) {
-        contentText += textWordMap[Math.floor(Math.random() * textWordMap.length)];
-      }
-
-      dataSource.push({
-        key: Math.floor(1000 + Math.random() * 1000) + '' + i,
-        type: Math.floor(Math.random() * 2) == 0 ? 'me' : 'other',
-        content: contentText,
-      })
-    }
-
-    this.setData({dataSource})
+    this.setData({ chatingObj })
   },
 
   /**
    * 点击发送消息
    */
   handleOnSendMsg: function () {
-    let inputMsg = this.data.inputMsg;
-    console.info('inputMsg', inputMsg)
-    app.sendSocketMessage(inputMsg)
+    let chatingObj = this.data.chatingObj || {};
+    let message = this.data.inputMsg;
+    app.createSocketMessage('chat_to_one', chatingObj.userId, 'text', chatingObj.bottleId, message)
     this.setData({ inputMsg: '' });
   },
 

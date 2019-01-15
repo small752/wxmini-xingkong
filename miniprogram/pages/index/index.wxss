@@ -65,6 +65,7 @@
   padding: 5px;
   position: absolute;
   z-index: 50;
+  background-color: #FFFFFF;
   animation: draft_item_anim 2s ease-in-out 0s infinite alternate;
 }
 

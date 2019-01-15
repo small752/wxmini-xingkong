@@ -42,12 +42,12 @@
         wx:for-index="idx"
         wx:for-item="item"
         wx:key="{{item.key}}"
-        style="left: {{item.rx+'%'}}; top: {{item.ry+'%'}}; background-color: {{(item.bottle.gender=='2') ? '#FFFFFF' : '#FFC0CB'}};"
+        style="left: {{item.rx+'%'}}; top: {{item.ry+'%'}};"
         class='{{item.clicked? "draft-item-image-clicked":"draft-item-image"}}'
         bindtap="bottleClick"
         data-bottlekey="{{item.key}}"
         data-bottle="{{item}}"
-        src="../../images/item.png"></image>
+        src='{{(item.bottle.gender=="2") ? "../../images/item1.png" : "../../images/item2.png"}}'></image>
 
       <view class='create-bottle-menu-cont'>
         <image

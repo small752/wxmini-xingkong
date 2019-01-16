@@ -41,11 +41,13 @@ Page({
     let me = this;
     let chatingObj = this.data.chatingObj || {};
     let message = this.data.inputMsg;
-    console.info('handleOnSendMsg', message)
-    app.createSocketMessage('chat_to_one', chatingObj.userId, 'text', chatingObj.bottleId, message, function() {
-      me.setData({ inputMsg: '' });
-    })
-    
+    if (message && message.length > 0) {
+      app.createSocketMessage('chat_to_one', chatingObj.userId, 'text', chatingObj.bottleId, message)
+
+      setTimeout(function() {
+        me.setData({ inputMsg: '' });
+      }, 100)
+    }    
   },
 
   /**

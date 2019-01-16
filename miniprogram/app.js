@@ -248,11 +248,10 @@ App({
 
     wx.onSocketMessage(function (res) {
       let msgObj = (res && res.data && JSON.parse(res.data)) || {};
-      console.info('接收到消息:' + msgObj)
+      console.info('socket receive msg:', msgObj)
       let bottleId = msgObj.bottleId;
       let bottleMsgs = wx.getStorageSync('bottleMsgs_' + bottleId)
 
-      console.info('bottleMsgs', bottleMsgs)
       if (!(bottleMsgs && bottleMsgs.length > 0)) {
         bottleMsgs = [];
       }
@@ -272,7 +271,7 @@ App({
   /**
    * 创建消息并发送
    */
-  createSocketMessage: function (type, toUserId, contentType, bottleId, message, suc) {
+  createSocketMessage: function (type, toUserId, contentType, bottleId, message) {
     let me = this;
     let currentUserId = me.globalData.wxUserInfo && me.globalData.wxUserInfo.userId;
     let msgObj = {
@@ -284,22 +283,21 @@ App({
       message,
     };
 
-    me.sendSocketMessage(JSON.stringify(msgObj), suc);
+    me.sendSocketMessage(JSON.stringify(msgObj));
   },
 
   /**
    * 向后台发送socket消息
    */
-  sendSocketMessage: function (msg, suc) {
+  sendSocketMessage: function (msg) {
+    console.info('socket send msg:', msg)
     let me = this;
     if (me.globalData.socketObj.open) {
       wx.sendSocketMessage({
-        data: msg,
-        success: suc,
+        data: msg
       })
     } else {
       me.globalData.socketObj.msgQueue.push(msg)
-      suc && suc();
     }
   },
 

@@ -2,10 +2,10 @@
 App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
-    // bizUrl: 'https://www.yana.site/biz/service',
-    // socketUrl: 'wss://www.yana.site/biz/service',
-    bizUrl: 'https://dev.yana.site/biz/service',
-    socketUrl: 'wss://dev.yana.site/biz/service',
+    bizUrl: 'https://www.yana.site/biz/service',
+    socketUrl: 'wss://www.yana.site/biz/service',
+    // bizUrl: 'https://dev.yana.site/biz/service',
+    // socketUrl: 'wss://dev.yana.site/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
     needAuth: ['scope.userInfo', 'scope.userLocation'],
@@ -45,8 +45,10 @@ App({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    console.info('app onhide')
-    wx.closeSocket()
+    console.info('app onhide', this.globalData.socketObj.open)
+    if (this.globalData.socketObj.open) {
+      wx.closeSocket()
+    }
   },
 
   /**
@@ -245,14 +247,32 @@ App({
     })
 
     wx.onSocketMessage(function (res) {
-      console.log('app WebSocket 收到消息', res)
+      let msgObj = (res && res.data && JSON.parse(res.data)) || {};
+      console.info('接收到消息:' + msgObj)
+      let bottleId = msgObj.bottleId;
+      let bottleMsgs = wx.getStorageSync('bottleMsgs_' + bottleId)
+
+      console.info('bottleMsgs', bottleMsgs)
+      if (!(bottleMsgs && bottleMsgs.length > 0)) {
+        bottleMsgs = [];
+      }
+      bottleMsgs.push(msgObj)
+
+      wx.setStorage({
+        key: 'bottleMsgs_' + bottleId,
+        data: bottleMsgs
+      })
+    })
+
+    wx.onSocketError(function(res) {
+      console.info('onSocketError', res)
     })
   },
 
   /**
    * 创建消息并发送
    */
-  createSocketMessage: function (type, toUserId, contentType, bottleId, message) {
+  createSocketMessage: function (type, toUserId, contentType, bottleId, message, suc) {
     let me = this;
     let currentUserId = me.globalData.wxUserInfo && me.globalData.wxUserInfo.userId;
     let msgObj = {
@@ -264,20 +284,22 @@ App({
       message,
     };
 
-    me.sendSocketMessage(JSON.stringify(msgObj));
+    me.sendSocketMessage(JSON.stringify(msgObj), suc);
   },
 
   /**
    * 向后台发送socket消息
    */
-  sendSocketMessage: function (msg) {
+  sendSocketMessage: function (msg, suc) {
     let me = this;
     if (me.globalData.socketObj.open) {
       wx.sendSocketMessage({
-        data: msg
+        data: msg,
+        success: suc,
       })
     } else {
       me.globalData.socketObj.msgQueue.push(msg)
+      suc && suc();
     }
   },
 

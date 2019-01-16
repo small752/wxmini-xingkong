@@ -27,16 +27,25 @@ Page({
     })
 
     this.setData({ chatingObj })
+
+    // 从文件中查询之前的聊天记录
+
+    // 从本地缓存中读取未读的消息
+    
   },
 
   /**
    * 点击发送消息
    */
   handleOnSendMsg: function () {
+    let me = this;
     let chatingObj = this.data.chatingObj || {};
     let message = this.data.inputMsg;
-    app.createSocketMessage('chat_to_one', chatingObj.userId, 'text', chatingObj.bottleId, message)
-    this.setData({ inputMsg: '' });
+    console.info('handleOnSendMsg', message)
+    app.createSocketMessage('chat_to_one', chatingObj.userId, 'text', chatingObj.bottleId, message, function() {
+      me.setData({ inputMsg: '' });
+    })
+    
   },
 
   /**

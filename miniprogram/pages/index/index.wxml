@@ -8,15 +8,19 @@
   />
   <view class='index-menu-cont'>
     <view wx:if="{{userInfo.openid&& userInfo.openid.length > 0}}" class='index-menu-content'>
-      <image
+      <image wx:if="{{false}}"
         class='user-menu-image'
         src="../../images/user.png">
       </image>
-      <image
-          class='bottle-menu-image'
-          src="../../images/bottle.png"
-          bindtap="routeToBottleListPage"
-      ></image>
+      <view class='bottles-menu-image-cont'>
+        <image
+            class='bottle-menu-image'
+            src="../../images/bottle.png"
+            bindtap="routeToBottleListPage"
+        ></image>
+        <text  wx:if="{{unreadMsgCount > 0}}" class='unread-msg-count'>{{unreadMsgCount}}</text>
+      </view>
+      
 
       <view>
         <picker

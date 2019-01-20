@@ -32,7 +32,7 @@
 .bottle-user-headimg {
   width: 100rpx;
   height: 100rpx;
-  border-radius: 50%;
+  border-radius: 20rpx;
   margin-top: 16rpx;
 }
 
@@ -69,7 +69,6 @@
   width: 100%;
   font-size: 32rpx;
   color: #000;
-  font-weight: bold;
   line-height: 45rpx;
   height: 45rpx;
   overflow: hidden;
@@ -98,4 +97,10 @@
   font-size: 28rpx;
   color: #999;
   text-align: center;
+}
+
+.bottles-list-empty {
+  text-align: center;
+  color: #999;
+  padding: 60rpx;
 }

@@ -25,6 +25,14 @@
   padding: 25rpx 40rpx;
 }
 
+.bottles-menu-image-cont {
+  margin-left: 20rpx;
+  width: 42rpx;
+  height: 42rpx;
+  display: inline-block;
+  position: relative;
+}
+
 .user-menu-image {
   width: 35rpx;
   height: 35rpx;
@@ -34,12 +42,22 @@
 }
 
 .bottle-menu-image {
-  margin-left: 20rpx;
   width: 42rpx;
   height: 42rpx;
   border-radius: 50%;
   background-color: rgba(29, 24, 24, 0.795);
   padding: 15rpx;
+}
+
+.unread-msg-count {
+  position: absolute;
+  top: -10rpx;
+  left: 46rpx;
+  font-size: 20rpx;
+  color: #FFFFFF;
+  border-radius: 15rpx;
+  padding: 0 8rpx;
+  background-color: rgba(255, 0, 0, 0.8);
 }
 
 .index-content {

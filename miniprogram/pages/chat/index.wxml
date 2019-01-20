@@ -12,33 +12,33 @@
       wx:for="{{dataSource}}"
       wx:for-index="idx"
       wx:for-item="item"
-      wx:key="{{item.key}}"
-      id="{{idx == dataSource.length-1 ? 'last_chat_record_cont' : 'chat_record_' + item.key}}"
+      wx:key="{{item.recordId}}"
+      id="{{idx == dataSource.length-1 ? 'last_chat_record_cont' : 'chat_record_' + item.recordId}}"
     >
 
       <view
-        wx:if="{{item.type == 'me'}}"
+        wx:if="{{item.fromUserId != chatingObj.userId}}"
         class='chat-record-item chat-target-me'
       >
         <view class='chat-record-item-content'>
 
           <view class='chat-text-content-cont'>
             <view class='chat-text-container'>
-              <view class='chat-text-content-warp'>{{item.content}}</view>
+              <text class='chat-text-content-warp'>{{item.message}}</text>
             </view>
           </view>
           <view class='chat-headimg-image-cont'>
             <image
               class='chat-headimg-image'
               mode="scaleToFill"
-              src="https://img.ishanshan.com/gimg/n/20181216/14cff801ecfc36eeefdd23f65b5f9f18"
+              src='{{chatingObj.myHeadimg}}'
             ></image>
           </view>
         </view>
       </view>
 
       <view
-        wx:if="{{item.type == 'other'}}"
+        wx:else
         class='chat-record-item chat-target-other'
       >
         <view class='chat-record-item-content'>
@@ -46,13 +46,13 @@
             <image
               class='chat-headimg-image'
               mode="scaleToFill"
-              src="https://img.ishanshan.com/gimg/n/20181216/14cff801ecfc36eeefdd23f65b5f9f18"
+              src='{{chatingObj.headimg}}'
             ></image>
           </view>
 
           <view class='chat-text-content-cont'>
             <view class='chat-text-container'>
-              <view class='chat-text-content-warp'>{{item.content}}</view>
+              <text class='chat-text-content-warp'>{{item.message}}</text>
             </view>
           </view>
         </view>

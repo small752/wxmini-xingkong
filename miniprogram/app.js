@@ -2,10 +2,10 @@
 App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
-    bizUrl: 'https://www.yana.site/biz/service',
-    socketUrl: 'wss://www.yana.site/biz/service',
-    // bizUrl: 'https://dev.yana.site/biz/service',
-    // socketUrl: 'wss://dev.yana.site/biz/service',
+    // bizUrl: 'https://www.yana.site/biz/service',
+    // socketUrl: 'wss://www.yana.site/biz/service',
+    bizUrl: 'https://dev.yana.site/biz/service',
+    socketUrl: 'wss://dev.yana.site/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
     needAuth: ['scope.userInfo', 'scope.userLocation'],
@@ -22,7 +22,8 @@ App({
       maxRelinkTimes: 10,// 最大重连次数 超过则超时
       liveListenTime: undefined,//  心跳检测
       msgQueue: [],
-    }
+    },
+    chatRecord: {},// 未查看的聊天记录
   },
 
   onLaunch: function () {
@@ -214,6 +215,7 @@ App({
       }, 500)
       return;
     }
+
     //  建立socket链接
     wx.connectSocket({
       url: me.globalData.socketUrl + '/bottlesocket/' + currentUserId,
@@ -250,22 +252,25 @@ App({
       let msgObj = (res && res.data && JSON.parse(res.data)) || {};
       console.info('socket receive msg:', msgObj)
       let bottleId = msgObj.bottleId;
-      let bottleMsgs = wx.getStorageSync('bottleMsgs_' + bottleId)
+
+      let chatRecord = me.globalData.chatRecord;
+
+      let bottleMsgs = chatRecord[bottleId];
 
       if (!(bottleMsgs && bottleMsgs.length > 0)) {
         bottleMsgs = [];
       }
       bottleMsgs.push(msgObj)
 
-      wx.setStorage({
-        key: 'bottleMsgs_' + bottleId,
-        data: bottleMsgs
-      })
+      me.globalData.chatRecord[bottleId] = bottleMsgs;
     })
 
     wx.onSocketError(function(res) {
       console.info('onSocketError', res)
     })
+
+    // 向后台查询之前未接收的消息
+    me.queryUnReadMessage();
   },
 
   /**
@@ -301,4 +306,15 @@ App({
     }
   },
 
+  /**
+   * 查询上线前未接收的消息
+   */
+  queryUnReadMessage: function() {
+    let me = this;
+
+    let postUrl = me.globalData.bizUrl + '/bt/bottle/unSendMsg';
+    me.requestServer(postUrl, {}, function (res) {
+      console.info('unSendMsg', res)
+    })
+  },
 })

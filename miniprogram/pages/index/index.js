@@ -9,6 +9,9 @@ Page({
     filterAddress: ['浙江省', '杭州市', '滨江区'],
     authModalVisible: false,
     authInfo: '',// 当前用户授权信息
+
+    unreadScanTime: undefined, // 扫描未读消息数量定时器
+    unreadMsgCount: 0,//  未读消息数量
   },
 
   onLoad: function() {
@@ -43,6 +46,46 @@ Page({
         }
       }
     })
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    let me = this;
+    //  开启定时器不停扫描消息列表
+    me.setData({
+      unreadScanTime: setInterval(function () {
+        let chatRecord = app.globalData.chatRecord;
+        let unreadMsgCount = 0;
+
+        let keys = Object.keys(chatRecord)
+        for (let i = 0; i < keys.length; i++) {
+          let itemarr = chatRecord[keys[i]];
+          unreadMsgCount += itemarr.length;
+        }
+        me.setData({ unreadMsgCount })
+      }, 500),
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+    if (this.data.unreadScanTime != undefined) {
+      clearInterval(this.data.unreadScanTime)
+    }
+  },
+
+  /**
+   * 生命周期函数--页面卸载时
+   * 取消消息扫描监听
+   */
+  onUnload: function () {
+    if (this.data.unreadScanTime != undefined) {
+      clearInterval(this.data.unreadScanTime)
+    }
   },
 
   /**

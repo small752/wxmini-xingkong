@@ -14,27 +14,39 @@
       wx:for="{{dataSource}}"
       wx:for-index="idx"
       wx:for-item="item"
-      wx:key="{{item.key}}"
+      wx:key="{{item.bottleId}}"
       class='bottles-list-item-container'
     >
-      <view class='bottle-list-item'>
+      <view class='bottle-list-item' 
+        data-bottleid="{{item.bottleId}}"
+        bindtap="bottleClick"
+      >
         <view class='bottle-user-headimg-cont'>
           <image
             class='bottle-user-headimg'
             mode="scaleToFill"
-            src="https://img.ishanshan.com/gimg/n/20181213/14cff801ecfc36eeefdd23f65b5f9f18"></image>
+            src="{{item.authorHeadimg}}"></image>
         </view>
-        <view class='bottle-item-container' hover-class='bottle-item-container-click' bindtap="bottleClick">
+        <view 
+          class='bottle-item-container' 
+          hover-class='bottle-item-container-click' 
+        >
           <view class='bottle-obj-cont'>
-            <view class='bottle-target-name'>陈芬</view>
-            <view class='bottle-last-msg-text'>你什的萨的撒飞洒飞洒飞洒发生芬萨嘎首府萨尔么时候来呀</view>
+            <view class='bottle-target-name'>{{item.authorName}}</view>
+            <view class='bottle-last-msg-text'>{{item.lastMessage}}</view>
           </view>
           <view class='bottle-time-cont'>
-            <view class='bottle-last-msg-time'>15:32</view>
+            <view class='bottle-last-msg-time'>{{item.lastTime}}</view>
           </view>
           <view class='bottle-item-split'></view>
         </view>
         
+      </view>
+    </view>
+
+    <view wx:if="{{dataSource.length == 0}}">
+      <view class='bottles-list-empty'>
+        一个都没有😭快去捞一个
       </view>
     </view>
 

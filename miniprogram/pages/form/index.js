@@ -176,9 +176,18 @@ Page({
           icon: 'success',
           duration: 1000,
           success: function() {
-            wx.navigateBack({
-              delta: 1
+
+            wx.showToast({
+              title: '666扔成功了',
+              icon: 'none',
+              duration: 1000,
             })
+            setTimeout(function() {
+              wx.navigateBack({
+                delta: 1
+              })
+            }, 1000)
+            
           }
         })
       } else {

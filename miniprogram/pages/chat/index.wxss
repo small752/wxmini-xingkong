@@ -89,6 +89,7 @@
   text-align: left;
   border-radius: 10rpx;
   position: relative;
+  word-break: break-all;
 }
 
 .chat-target-me .chat-text-content-warp:after{

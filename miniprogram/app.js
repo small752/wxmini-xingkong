@@ -2,10 +2,10 @@
 App({
   globalData: {
     baseUrl: 'https://www.yana.site/appweb',
-    // bizUrl: 'https://www.yana.site/biz/service',
-    // socketUrl: 'wss://www.yana.site/biz/service',
-    bizUrl: 'https://dev.yana.site/biz/service',
-    socketUrl: 'wss://dev.yana.site/biz/service',
+    bizUrl: 'https://www.yana.site/biz/service',
+    socketUrl: 'wss://www.yana.site/biz/service',
+    // bizUrl: 'https://dev.yana.site/biz/service',
+    // socketUrl: 'wss://dev.yana.site/biz/service',
     wxUserInfo: {},
     wxUserLocation: {},
     needAuth: ['scope.userInfo', 'scope.userLocation'],
